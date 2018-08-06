@@ -51,6 +51,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        currentMove: -1,
       }],
       stepNumber: 0,
       xIsNext: true,
@@ -70,6 +71,7 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        currentMove: i,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -83,6 +85,46 @@ class Game extends React.Component {
     });
   }
 
+  //takes position 0-8 and returns [x,y] position on Board
+  //i know there's probably a better way to do this but i can't
+  //be bothered working out the maths and also doesn't hurt to
+  //learn how to do switch statements in react :)
+  //i know the breaks are unreachable but i feel i should keep them
+  //there for good practise
+  getPosition(i){
+    switch (i) {
+      case 0:
+        return [1,1];
+        break;
+      case 1:
+        return [1,2];
+        break;
+      case 2:
+        return [1,3];
+        break;
+      case 3:
+        return [2,1];
+        break
+      case 4:
+        return [2,2];
+        break;
+      case 5:
+        return [2,3];
+        break;
+      case 6:
+        return [3,1];
+        break;
+      case 7:
+        return [3,2];
+        break;
+      case 8:
+        return [3,3]
+        break;
+      default:
+        return [0,0];
+    }
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -90,7 +132,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-      'Go to move #' + move :
+      'Go to move #' + move + " - (" + this.getPosition(step.currentMove) +")" :
       'Go to game start';
       return (
         <li key={move}>
